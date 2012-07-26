@@ -1,0 +1,41 @@
+opencontainingfolder.py
+
+Adds an option to open the folder containing the selected track(s) to 
+the right click context menu.
+
+
+=== Dependencies ===
+
+  * rhythmbox		    >= 	2.97
+  * pygtk/gobject
+  * xdg-utils
+
+
+=== Usage ===
+
+To install, copy the 'opencontainingfolder' directory and its contents 
+to ~/.local/share/rhythmbox/plugins/.
+
+
+=== Thanks ===
+
+Partly based on rb-open-folder by Adolfo González Blázquez.
+
+
+=== Contact ===
+
+Donagh Horgan
+E-mail: donagh.horgan@gmail.com
+
+
+=== Copyright ===
+
+Copyright (C) 2012 Donagh Horgan.
+
+Partly based on rb-open-folder by Adolfo González Blázquez.
+Copyright (C) 2007, 2008 Adolfo González Blázquez <code@infinicode.org>.
+
+
+=== License ===
+
+Licensed under GPLv3, see COPYING for more info.
