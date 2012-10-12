@@ -1,6 +1,6 @@
 [Plugin]
 Loader=python
-Module=opencontainingfolder
+Module=OpenContainingFolder
 IAge=2
 Name=Open containing folder
 Description=Adds an option to open the folder containing the selected track(s) to the right click context menu.

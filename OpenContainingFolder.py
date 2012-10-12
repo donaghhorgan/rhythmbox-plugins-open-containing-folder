@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#    opencontainingfolder.py
+#    OpenContainingFolder.py
 #
 #    Adds an option to open the folder containing the selected track(s) 
 #    to the right click context menu.
@@ -66,7 +66,7 @@ class TestPlugin (GObject.Object, Peas.Activatable):
 		
 		data['action_group'] = Gtk.ActionGroup(name='OpenContainingFolderActions')
 
-		action = Gtk.Action(name='OpenContainingFolder', label=_("_Open Containing Folder"),
+		action = Gtk.Action(name='OpenContainingFolder', label=_("_Open containing folder"),
 		                    tooltip=_("Open the folder containing the selected track(s)"),
 		                    stock_id='gnome-mime-text-x-python')
 		action.connect('activate', self.open_folder, shell)
