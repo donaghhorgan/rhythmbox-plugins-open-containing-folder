@@ -1,4 +1,4 @@
-opencontainingfolder.py
+OpenContainingFolder
 
 Adds an option to open the folder containing the selected track(s) to 
 the right click context menu.
@@ -13,8 +13,8 @@ the right click context menu.
 
 === Usage ===
 
-To install, copy the 'opencontainingfolder' directory and its contents 
-to ~/.local/share/rhythmbox/plugins/.
+To install, run 'install.sh' or copy the 'OpenContainingFolder' directory 
+and its contents to ~/.local/share/rhythmbox/plugins/.
 
 
 === Thanks ===
