@@ -4,7 +4,7 @@
 #
 #    Adds an option to open the folder containing the selected track(s) 
 #    to the right click context menu.
-#    Copyright (C) 2012 Donagh Horgan <donaghhorgan@gmail.com>
+#    Copyright (C) 2012-2013 Donagh Horgan <donagh.horgan@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ ui_str = """
 </ui>
 """
 
-class TestPlugin (GObject.Object, Peas.Activatable):
+class OpenContainingFolderPlugin (GObject.Object, Peas.Activatable):
 	object = GObject.property (type = GObject.Object)
 
 	def __init__(self):
@@ -66,7 +66,7 @@ class TestPlugin (GObject.Object, Peas.Activatable):
 		
 		data['action_group'] = Gtk.ActionGroup(name='OpenContainingFolderActions')
 
-		action = Gtk.Action(name='OpenContainingFolder', label=_("_Open containing folder"),
+		action = Gtk.Action(name='OpenContainingFolder', label=_("Open containing folder"),
 		                    tooltip=_("Open the folder containing the selected track(s)"),
 		                    stock_id='gnome-mime-text-x-python')
 		action.connect('activate', self.open_folder, shell)

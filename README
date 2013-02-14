@@ -13,8 +13,8 @@ the right click context menu.
 
 === Usage ===
 
-To install, run 'install.sh' or copy the 'OpenContainingFolder' directory 
-and its contents to ~/.local/share/rhythmbox/plugins/.
+To install, run 'install.sh' or copy the contents of the archive to 
+~/.local/share/rhythmbox/plugins/OpenContainingFolder/.
 
 
 === Thanks ===
@@ -30,7 +30,7 @@ E-mail: donagh.horgan@gmail.com
 
 === Copyright ===
 
-Copyright (C) 2012 Donagh Horgan.
+Copyright (C) 2012-2013 Donagh Horgan.
 
 Partly based on rb-open-folder by Adolfo González Blázquez.
 Copyright (C) 2007, 2008 Adolfo González Blázquez <code@infinicode.org>.
