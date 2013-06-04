@@ -1,12 +1,12 @@
 OpenContainingFolder
 
-Adds an option to open the folder containing the selected track(s) to 
-the right click context menu.
+Adds an option to open the folder containing the selected track(s) to the 
+right click context menu.
 
 
 === Dependencies ===
 
-  * rhythmbox		    >= 	2.97
+  * rhythmbox		    >= 	2.99
   * pygtk/gobject
   * xdg-utils
 

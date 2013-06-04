@@ -11,3 +11,11 @@ mkdir -p $PLUGIN_PATH
 cp -r "${SCRIPT_PATH}"* "$PLUGIN_PATH"
 rm "${PLUGIN_PATH}${SCRIPT_NAME}"
 
+if [ -n "$1" ]
+then
+    if [ $1 == "-d" ]
+    then
+        eval "clear"
+        eval "rhythmbox -D OpenContainingFolder"
+    fi
+fi
