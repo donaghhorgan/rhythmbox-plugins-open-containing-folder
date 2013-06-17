@@ -6,7 +6,7 @@ right click context menu.
 
 === Dependencies ===
 
-  * rhythmbox		    >= 	2.99
+  * rhythmbox		    >= 	2.96
   * pygtk/gobject
   * xdg-utils
 
@@ -16,8 +16,13 @@ right click context menu.
 To install, run 'install.sh' or copy the contents of the archive to 
 ~/.local/share/rhythmbox/plugins/OpenContainingFolder/.
 
+To debug, run 'install.sh -d'.
+
 
 === Thanks ===
+
+Thanks to fossfreedom, asermax and silberzwiebel for feedback, code and 
+comments.
 
 Partly based on rb-open-folder by Adolfo González Blázquez.
 
@@ -31,6 +36,9 @@ E-mail: donagh.horgan@gmail.com
 === Copyright ===
 
 Copyright (C) 2012-2013 Donagh Horgan.
+
+Uses the rb3compat module by fossfreedom and asermax.
+Copyright (C) 2012 fossfreedom, Agustin Carrasco.
 
 Partly based on rb-open-folder by Adolfo González Blázquez.
 Copyright (C) 2007, 2008 Adolfo González Blázquez <code@infinicode.org>.
