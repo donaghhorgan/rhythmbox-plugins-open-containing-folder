@@ -30,10 +30,10 @@ from gi.repository import Gtk
 from subprocess import Popen
 
 # Rhythmbox compatibility module
-import rb3compat
-from rb3compat import ActionGroup
-from rb3compat import Action
-from rb3compat import ApplicationShell
+import OpenContainingFolder_rb3compat as rb3compat
+from OpenContainingFolder_rb3compat import ActionGroup
+from OpenContainingFolder_rb3compat import Action
+from OpenContainingFolder_rb3compat import ApplicationShell
 
 class OpenContainingFolderPlugin (GObject.Object, Peas.Activatable):
     object = GObject.property (type = GObject.Object)
