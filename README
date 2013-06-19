@@ -9,6 +9,7 @@ right click context menu.
   * rhythmbox		    >= 	2.96
   * pygtk/gobject
   * xdg-utils
+  * python-lxml
 
 
 === Usage ===
