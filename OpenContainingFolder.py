@@ -26,14 +26,10 @@ from gi.repository import GObject
 from gi.repository import Peas
 from gi.repository import RB
 from gi.repository import Gtk
+from gi.repository import Gio
 
 from subprocess import Popen
-
-# Rhythmbox compatibility module
-import OpenContainingFolder_rb3compat as rb3compat
-from OpenContainingFolder_rb3compat import ActionGroup
-from OpenContainingFolder_rb3compat import Action
-from OpenContainingFolder_rb3compat import ApplicationShell
+import urllib
 
 class OpenContainingFolderPlugin (GObject.Object, Peas.Activatable):
     object = GObject.property (type = GObject.Object)
@@ -62,48 +58,35 @@ class OpenContainingFolderPlugin (GObject.Object, Peas.Activatable):
             uri = selected[0].get_playback_uri()
             dirpath = uri.rpartition('/')[0]
             if dirpath == '': dirpath = '/'
-            self.log(self.open_folder.__name__, 'Opening ' + rb3compat.unquote(dirpath))
+            self.log(self.open_folder.__name__, 'Opening ' + urllib.parse.unquote(dirpath))
             Popen(['xdg-open', dirpath])
 
     def do_activate(self):
         self.log(self.do_activate.__name__, 'Activating plugin...')
         
-        ui_str = '''
-        <ui>
-          <popup name="BrowserSourceViewPopup">
-            <placeholder name="PluginPlaceholder">
-              <menuitem name="OpenContainingFolderPopup" action="OpenContainingFolder"/>
-            </placeholder>
-          </popup>
-          <popup name="PlaylistViewPopup">
-            <placeholder name="PluginPlaceholder">
-              <menuitem name="OpenContainingFolderPopup" action="OpenContainingFolder"/>
-            </placeholder>
-          </popup>
-          <popup name="QueuePlaylistViewPopup">
-            <placeholder name="PluginPlaceholder">
-              <menuitem name="OpenContainingFolderPopup" action="OpenContainingFolder"/>
-            </placeholder>
-          </popup>
-          <popup name="PodcastViewPopup">
-            <placeholder name="PluginPlaceholder">
-              <menuitem name="OpenContainingFolderPopup" action="OpenContainingFolder"/>
-            </placeholder>
-          </popup>
-        </ui>
-        '''
+        self.locations = [
+            'browser-popup', 'playlist-popup',
+            'podcast-episode-popup', 'queue-popup'
+            ]
         
-        self.shell = self.object        
-        self.action_group = ActionGroup(self.shell, 'OpenContainingFolderActionGroup')
-    
-        action = self.action_group.add_action(func=self.open_folder,
-        action_name='OpenContainingFolder', label='Open containing folder')
-
-        self._appshell = ApplicationShell(self.shell)
-        self._appshell.insert_action_group(self.action_group)
-        self._appshell.add_browser_menuitems(ui_str, 'OpenContainingFolderActionGroup')
+        app = Gio.Application.get_default()
+        
+        action = Gio.SimpleAction(name='open-containing-folder')
+        action.connect('activate', self.open_folder)
+        app.add_action(action)
+        
+        item = Gio.MenuItem()
+        item.set_label('Open containing folder')
+        item.set_detailed_action('app.open-containing-folder')
+        for location in self.locations:
+            app.add_plugin_menu_item(
+                location, 'open-containing-folder', item
+                )
 
     def do_deactivate(self):
         self.log(self.do_deactivate.__name__, 'Deactivating plugin...')
         
-        self._appshell.cleanup()
+        app = Gio.Application.get_default()
+        for location in self.locations:
+            app.remove_plugin_menu_item(location, 'open-containing-folder')
+
