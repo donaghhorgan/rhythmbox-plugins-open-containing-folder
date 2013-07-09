@@ -6,18 +6,16 @@ right click context menu.
 
 === Dependencies ===
 
-  * rhythmbox		    >= 	2.96
-  * pygtk/gobject
+  * rhythmbox		    >= 	2.95
   * xdg-utils
-  * python-lxml
+  * python-lxml         (Rhythmbox 2.99 only)
 
 
 === Usage ===
 
-To install, run 'install.sh' or copy the contents of the archive to 
-~/.local/share/rhythmbox/plugins/OpenContainingFolder/.
-
-To debug, run 'install.sh -d'.
+To install the plugin, run install.py. If you have problems, try running 
+'install.py -l' in a terminal and select the version of Rhythmbox you have 
+installed.
 
 
 === Thanks ===
