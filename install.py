@@ -3,7 +3,7 @@
 #
 #    install.py
 #
-#    Generic Rhythmbox plugin installer.
+#    A generic Rhythmbox plugin installer for users and developers.
 #    Copyright (C) 2013 Donagh Horgan <donagh.horgan@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,71 +19,121 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse
-import os
-import shutil
-from subprocess import call
-
+##############################################################################
+# Customisable options
+##############################################################################
 plugin_name = 'OpenContainingFolder'
-version_locations = {
+install_directory_name = 'OpenContainingFolder'
+old_install_locations = [
+    'opencontainingfolder'
+]
+source_file_locations = {
     '2.95': './old/2.99',
     '2.96': './old/2.99',
     '2.97': './old/2.99',
     '2.98': './old/2.99',
     '2.99': './old/2.99',
-    '3.0': './'
+    'dev': './'
 }
-plugins_directory = os.path.expanduser('~/.local/share/rhythmbox/plugins/')
-install_location = plugins_directory + plugin_name + '/'
-old_install_locations = [
-    'opencontainingfolder'
+glib_schema = ''
+files_to_remove_after_install = [
+    '.git', '.gitignore', 'old'
 ]
-glib_schema = None
-glib_path = '/usr/share/glib-2.0/schemas/'
 
-def remove_old_versions():
-    for location in old_install_locations:
-        if location is not '' and location is not None:
-            if os.path.exists(plugins_directory + location):
-                shutil.rmtree(plugins_directory + location)
+##############################################################################
+# Everything below this line does not need to be edited (unless you want to)
+##############################################################################
+import argparse
+import os
+import shutil
+from subprocess import call
+from gi.repository import RB
+
+plugins_path = os.path.expanduser('~/.local/share/rhythmbox/plugins/')
+install_path = plugins_path + install_directory_name + '/'
+glib_path = '/usr/share/glib-2.0/schemas/'
+if glib_schema:
+    files_to_remove_after_install += [glib_schema]
+
+def guess_rb_version():
+    '''
+    Guesses the version of the plugin to install.
+    '''
+    try:
+        #if rb3_test():
+        #    version = '3.0'
+        # for now, we have no test, so just raise an exception:
+        raise
+    except:
+        try:
+            test = RB.Application()
+            version = '2.99'
+        except:
+            try:
+                # Untested
+                test = RB.RhythmDBImportJob.get_processed()
+                version = '2.98'
+            except:
+                try:
+                    # Untested
+                    test = RB.RhythmDBQueryResultList()
+                    version = '2.97'
+                except:
+                    try:
+                        test = RB.ChunkLoader()
+                        version = '2.96'
+                    except:
+                        try:
+                            # Untested
+                            test = RB.Player()
+                            version = '2.95'
+                        except:
+                            version = None
+    return version
 
 def install(version):
-    shutil.copytree(version_locations[version], install_location)
+    '''
+    Installs the specified version of the plugin.
+    '''
+    print('Removing old versions.')
+    remove_old_versions()
+    uninstall()
+    print('Installing version ' + version + '.')
+    source_path = source_file_locations[version]
+    shutil.copytree(source_path, install_path)
     if glib_schema:
         print('Need sudo to install settings schema.')
         call(['sudo', 'cp', glib_schema, glib_path])
-        call(['rm', install_location + glib_schema])
         call(['sudo', 'glib-compile-schemas', glib_path])
 
 def uninstall():
-    if os.path.exists(install_location):
-        shutil.rmtree(install_location)
+    '''
+    Uninstalls the plugin.
+    '''
+    if os.path.exists(install_path):
+        shutil.rmtree(install_path)
 
-parser = argparse.ArgumentParser(
-    'Installs the ' + plugin_name + ' plugin for Rhythmbox.'
-    )
-parser.add_argument(
-    '-d', '--debug', action='store_true', 
-    help = 'installs the plugin and runs Rhythmbox in debug mode'
-    )
-parser.add_argument(
-    '-u', '--uninstall', action='store_true', 
-    help = 'uninstall the plugin'
-    )
-parser.add_argument(
-    '-v', '--version', help = 'install a specific version')
+def remove_old_versions():
+    '''
+    Removes old versions of the plugin, if present.
+    '''
+    for location in old_install_locations:
+        if location is not '' and location is not None:
+            if os.path.exists(plugins_path + location):
+                shutil.rmtree(plugins_path + location)
 
-debug_mode = vars(parser.parse_args())['debug']
-uninstall_mode = vars(parser.parse_args())['uninstall']
-choice = vars(parser.parse_args())['version']
-
-if uninstall_mode:
-    remove_old_versions()
-    uninstall()
-else:
-    available_versions = sorted(version_locations.keys())
+def manual_install(error=False):
+    '''
+    Generates the dialog for manual installation. Should be passed 
+    error=True if guess_rb_version doesn't find anything. 
+    '''
+    choice = None
+    available_versions = get_available_versions()
     while choice not in available_versions and choice is not 'q':
         os.system('clear')
+        if error:
+            print('Could not determine Rhythmbox version. Trying manual ' + 
+                  'install \ninstead...\n')
         print(
             'Please select the version of Rhythmbox you want to install \n' + 
             plugin_name + ' for, or type q to quit.\n\n'
@@ -92,12 +142,101 @@ else:
         choice = raw_input('Version: ')
     
     if choice is not 'q':
-        print('Removing old versions.')
+        install(choice)
+        cleanup()
+
+def get_available_versions():
+    '''
+    Does some checks on source_file_locations to make sure the listed 
+    locations exist.
+    '''
+    versions = sorted(source_file_locations.keys())
+    available_versions = []
+    for v in versions:
+        if (
+            source_file_locations[v] != '' and 
+            source_file_locations[v] is not None and
+            os.path.exists(source_file_locations[v]) and
+            os.path.isdir(source_file_locations[v])
+            ):
+            available_versions += [v]
+        else:
+            if (
+                (source_file_locations[v] != '' and 
+                 source_file_locations[v] is not None) and
+                (not os.path.exists(source_file_locations[v]) or
+                 not os.path.isdir(source_file_locations[v]))
+                ):
+                print('ERROR: The source file location for version ' + v + 
+                      ' (' + source_file_locations[v] + ') is not a valid ' + 
+                      'directory.\n')
+                raise
+    return available_versions
+
+def cleanup():
+    '''
+    Removes the files specified in files_to_remove_after_install.
+    '''
+    print('Cleaning up...')
+    file_list = [install_path + f for f in files_to_remove_after_install]
+    for f in file_list:
+        if os.path.exists(f):
+            if os.path.isdir(f):
+                shutil.rmtree(f)
+            elif os.path.isfile(f):
+                os.remove(f)
+            else:
+                print('ERROR: The file ' + str(f) + 
+                      ' is not a file or a directory.\n')
+                raise
+
+def main():
+    '''
+    Parse command line arguments and call relevant functions.
+    '''    
+    parser = argparse.ArgumentParser(
+        description='Installs the ' + plugin_name + ' plugin for Rhythmbox.'
+        )
+    parser.add_argument(
+        '-d', '--debug', action='store_true', 
+        help = 'install the plugin and run Rhythmbox in debug mode'
+        )
+    parser.add_argument(
+        '-l', '--list', action='store_true', 
+        help = 'list the available versions of the plugin'
+        )
+    parser.add_argument(
+        '-u', '--uninstall', action='store_true', 
+        help = 'uninstall the plugin'
+        )
+    parser.add_argument(
+        '-v', '--version', help = 'install a specific version')
+
+    debug_mode = vars(parser.parse_args())['debug']
+    list_mode = vars(parser.parse_args())['list']
+    uninstall_mode = vars(parser.parse_args())['uninstall']
+    force_version = vars(parser.parse_args())['version']
+
+    if force_version:
+        version = force_version
+    else:
+        version = guess_rb_version()
+
+    if list_mode:
+        manual_install()
+    elif uninstall_mode:
         remove_old_versions()
         uninstall()
-        print('Installing version ' + choice + '.')
-        install(choice)
-        if debug_mode:
-            call(['clear'])
-            call(['rhythmbox', '-D', plugin_name])
+    else:
+        if version:
+            install(version)
+            cleanup()
+        else:
+            manual_install(error=True)
+    
+    if debug_mode:
+        call(['clear'])
+        call(['rhythmbox', '-D', plugin_name])
 
+main()
+print('Done.')
