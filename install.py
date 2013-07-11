@@ -58,37 +58,22 @@ if glib_schema:
 def guess_rb_version():
     '''
     Guesses the version of the plugin to install.
-    '''
-    try:
-        #if rb3_test():
-        #    version = '3.0'
-        # for now, we have no test, so just raise an exception:
-        raise
-    except:
-        try:
-            test = RB.Application()
-            version = '2.99'
-        except:
-            try:
-                # Untested
-                test = RB.RhythmDBImportJob.get_processed()
-                version = '2.98'
-            except:
-                try:
-                    # Untested
-                    test = RB.RhythmDBQueryResultList()
-                    version = '2.97'
-                except:
-                    try:
-                        test = RB.ChunkLoader()
-                        version = '2.96'
-                    except:
-                        try:
-                            # Untested
-                            test = RB.Player()
-                            version = '2.95'
-                        except:
-                            version = None
+    '''    
+    # for now, we have no test for RB 3.0, so just skip it:
+    if False:
+        version = '3.0'
+    elif 'Application' in dir(RB):
+        version = '2.99'
+    elif 'get_processed' in dir(RB.RhythmDBImportJob):
+        version = '2.98'
+    elif 'RhythmDBQueryResultList' in dir(RB):
+        version = '2.97'
+    elif 'ChunkLoader' in dir(RB):
+        version = '2.96'
+    elif 'Player' in dir(RB): # untested
+        version = '2.95'
+    else:
+        version = None
     return version
 
 def install(version):
@@ -98,7 +83,7 @@ def install(version):
     print('Removing old versions.')
     remove_old_versions()
     uninstall()
-    print('Installing version ' + version + '.')
+    print('Installing ' + plugin_name + ' for Rhythmbox ' + version + '.')
     source_path = source_file_locations[version]
     shutil.copytree(source_path, install_path)
     if glib_schema:
