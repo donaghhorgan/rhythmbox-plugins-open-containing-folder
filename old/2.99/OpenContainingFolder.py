@@ -106,4 +106,5 @@ class OpenContainingFolderPlugin (GObject.Object, Peas.Activatable):
     def do_deactivate(self):
         self.log(self.do_deactivate.__name__, 'Deactivating plugin...')
         
+        self._appshell.remove_action_group(self.action_group)
         self._appshell.cleanup()
