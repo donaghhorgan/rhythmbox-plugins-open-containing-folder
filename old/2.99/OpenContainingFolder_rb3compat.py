@@ -495,7 +495,19 @@ class ApplicationShell(object):
             :param action_group: `ActionGroup` to add
             '''
             self._action_groups[action_group.name] = action_group
-            
+
+        def remove_action_group(self, action_group):
+            '''
+            Removes an ActionGroup from the ApplicationShell
+        
+            :param action_group: `ActionGroup` to remove
+            '''
+            if is_rb3(self.shell):
+                pass
+            else:
+                uim = self.shell.props.ui_manager
+                uim.remove_action_group(action_group.actiongroup)
+
         def lookup_action(self, action_group_name, action_name, action_type='app'):
             '''
             looks up (finds) an action created by another plugin.  If found returns
