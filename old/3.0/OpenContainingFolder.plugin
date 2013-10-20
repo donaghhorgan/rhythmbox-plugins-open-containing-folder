@@ -2,6 +2,7 @@
 Loader=python3
 Module=OpenContainingFolder
 IAge=2
+Depends=rb
 Name=Open containing folder
 Description=Adds an option to open the folder containing the selected track(s) to the right click context menu.
 Authors=Donagh Horgan <donagh.horgan@gmail.com>
