@@ -33,6 +33,8 @@ source_file_locations = {
     '2.97': './old/2.99',
     '2.98': './old/2.99',
     '2.99': './old/2.99',
+    '3.0': './old/3.0',
+    '3.0.1': './old/3.0',
     'dev': './'
 }
 glib_schema = ''
@@ -58,9 +60,10 @@ if glib_schema:
 def guess_rb_version():
     '''
     Guesses the version of the plugin to install.
-    '''    
-    # for now, we have no test for RB 3.0, so just skip it:
-    if False:
+    '''
+    if 'default_eject' in dir(RB.DeviceSource):
+        version = '3.0.1'
+    elif 'ListModel' in dir(RB):
         version = '3.0'
     elif 'Application' in dir(RB):
         version = '2.99'

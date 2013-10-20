@@ -1,0 +1,50 @@
+OpenContainingFolder
+
+Adds an option to open the folder containing the selected track(s) to the 
+right click context menu.
+
+
+=== Dependencies ===
+
+  * rhythmbox		    >= 	2.95
+  * xdg-utils
+  * python-lxml         (Rhythmbox 2.99 only)
+
+
+=== Usage ===
+
+To install the plugin, run install.py. If you have problems, try running 
+'install.py -l' in a terminal and select the version of Rhythmbox you have 
+installed.
+
+
+=== Thanks ===
+
+Thanks to fossfreedom, asermax and silberzwiebel for feedback, code and 
+comments.
+
+Partly based on rb-open-folder by Adolfo González Blázquez.
+
+
+=== Contact ===
+
+Donagh Horgan
+E-mail: donagh.horgan@gmail.com
+
+
+=== Copyright ===
+
+Copyright (C) 2012-2013 Donagh Horgan.
+
+Uses the rb3compat module by fossfreedom and asermax.
+Copyright (C) 2013 fossfreedom, Agustin Carrasco.
+
+Partly based on rb-open-folder by Adolfo González Blázquez.
+Copyright (C) 2007, 2008 Adolfo González Blázquez <code@infinicode.org>.
+
+
+=== License ===
+
+Licensed under GPLv3, see LICENSE for more info.
+
+
