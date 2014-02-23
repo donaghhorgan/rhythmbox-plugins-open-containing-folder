@@ -3,8 +3,8 @@
 #
 #    install.py
 #
-#    An RBPluginInstaller for <plugin_name>.
-#    Copyright (C) <year> <plugin_author_name> <plugin_author_email>
+#    An RBPluginInstaller for OpenContainingFolder.
+#    Copyright (C) 2014 Donagh Horgan <donagh.horgan@gmail.com>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -31,12 +31,16 @@ plugin_files_path = {
     '3.0.1': './release/3.0',
     'dev': './dev'
 }
+common_files = [
+    'README', 'LICENSE'
+]
 cleanup_files = [
     '.git', '.gitignore', 'old'
 ]
 
 if __name__ == "__main__":
     RBPluginInstaller('OpenContainingFolder', plugin_files_path,
+                      common_files=common_files,
                       install_folder='OpenContainingFolder',
                       cleanup_files=cleanup_files,
                       old_install_folders=['opencontainingfolder'])

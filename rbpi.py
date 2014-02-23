@@ -35,8 +35,9 @@ class RBPluginInstaller():
     PLUGINS_PATH = '~/.local/share/rhythmbox/plugins/'
     GLIB_PATH = '/usr/share/glib-2.0/schemas/'
     
-    def __init__(self, plugin_name, plugin_files_path, install_folder=None, 
-                 glib_schema=None, cleanup_files=[], old_install_folders=[]):
+    def __init__(self, plugin_name, plugin_files_path, common_files=[], 
+                 install_folder=None, glib_schema=None, cleanup_files=[], 
+                 old_install_folders=[]):
         """
         Parse command line options and set paths.
         """
@@ -46,6 +47,7 @@ class RBPluginInstaller():
         
         self.plugin_name = plugin_name
         self.plugin_files_path = plugin_files_path
+        self.common_files = common_files
         self.install_folder = install_folder if install_folder else plugin_name
         self.glib_schema = glib_schema
         self.cleanup_files = cleanup_files
@@ -117,10 +119,17 @@ class RBPluginInstaller():
         logging.debug('Installing %s for Rhythmbox %s...' % \
                       (self.plugin_name, version))
         
+        # Install plugin files
         source_path = self.plugin_files_path[version]
         install_path = os.path.expanduser(os.path.join(self.PLUGINS_PATH,
                                                        self.install_folder))
         shutil.copytree(source_path, install_path)
+        
+        # Install common files
+        for f in self.common_files:
+            shutil.copy(f, install_path)
+        
+        # Install GLib scehema, if appropriate
         if self.glib_schema:
             logging.info('Need sudo permissions to install ' \
                          'the settings schema.')
