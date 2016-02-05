@@ -35,10 +35,10 @@ class OpenContainingFolder(GObject.Object, Peas.Activatable):
     object = GObject.property(type=GObject.Object)
 
     _action = 'open-containing-folder'
-    _locations = locations = ['browser-popup',
-                              'playlist-popup',
-                              'podcast-episode-popup',
-                              'queue-popup']
+    _locations = ['browser-popup',
+                  'playlist-popup',
+                  'podcast-episode-popup',
+                  'queue-popup']
 
     def __init__(self):
         super(OpenContainingFolder, self).__init__()
