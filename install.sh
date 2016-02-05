@@ -4,7 +4,7 @@
 
 name=OpenContainingFolder
 path=~/.local/share/rhythmbox/plugins/$name
-files=( LICENSE $name.plugin $name.py README )
+files=( LICENSE $name.plugin $name.py README.md )
 
 if [ -d "$path" ]; then
   rm -rf $path
