@@ -16,5 +16,6 @@ Run `install.sh` or copy `OpenContainingFolder.plugin` and
 
 ## Usage
 
-Right click a track and select *Open containing folder*.
+ 1. Enable the plugin in Tools/Plugins.
+ 2. Right click a track and select *Open containing folder*.
 
