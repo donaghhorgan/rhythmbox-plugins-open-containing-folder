@@ -24,6 +24,7 @@
 
 from gi.repository import Gio, GObject, Gtk, Peas, RB
 import logging
+import os
 import subprocess
 
 
@@ -56,7 +57,8 @@ class OpenContainingFolder(GObject.Object, Peas.Activatable):
             if selected:
                 uri = selected[0].get_playback_uri()
                 dirpath = uri.rpartition('/')[0]
-                dirpath = '/' if not dirpath else dirpath
+                dirpath = '/' if not dirpath else dirpath[5:]
+                dirpath = 'file:' + os.path.realpath(dirpath)
                 subprocess.check_call(['xdg-open', dirpath])
         except:
             logging.exception('Could not open folder')
